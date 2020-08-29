@@ -3,4 +3,6 @@ uvicorn
 requests
 pytest
 sqlalchemy
-psycopg2-binary
+psycopg2
+alembic
+python-dotenv
