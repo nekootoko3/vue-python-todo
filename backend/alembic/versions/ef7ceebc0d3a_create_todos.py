@@ -19,9 +19,8 @@ depends_on = None
 def upgrade():
     op.create_table(
         "todos",
-        sa.Column("id", sa.Integer(), nullable=False),
+        sa.Column("id", sa.Integer, primary_key=True),
         sa.Column("title", sa.String(), nullable=False),
-        sa.PrimaryKeyConstraint("id"),
     )
 
 
