@@ -42,14 +42,13 @@ export default class App extends Vue {
     });
     this.newTodoText = '';
   }
-//
-//  created() {
-//    Axios.get('http://localhost:8000/api/v1/todos')
-//      .then((res) => {
-//        console.log(res.data);
-//        const json = JSON.parse(res.data);
-//        this.todos = json;
-//      });
-//  }
+
+  created() {
+    Axios.get('http://localhost:8000/api/v1/todos')
+      .then((res) => {
+        console.log(res.data);
+        this.todos = res.data;
+      });
+  }
 }
 </script>
