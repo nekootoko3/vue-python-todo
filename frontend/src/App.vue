@@ -22,12 +22,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import Axios from 'axios';
 import TodoListItem from './components/TodoListItem.vue';
-
-const items = [
-  { id: 1, title: 'neko' },
-  { id: 2, title: 'inu' },
-];
 
 @Component({
   components: {
@@ -35,13 +31,9 @@ const items = [
   },
 })
 export default class App extends Vue {
-  todos: Array<{id: number; title: string}> = items;
+  todos: Array<{id: number; title: string}> = [];
 
   newTodoText = '';
-
-  onClick() {
-    this.newTodoText = 'さようなら';
-  }
 
   addNewTodo() {
     this.todos.push({
@@ -50,5 +42,14 @@ export default class App extends Vue {
     });
     this.newTodoText = '';
   }
+//
+//  created() {
+//    Axios.get('http://localhost:8000/api/v1/todos')
+//      .then((res) => {
+//        console.log(res.data);
+//        const json = JSON.parse(res.data);
+//        this.todos = json;
+//      });
+//  }
 }
 </script>
