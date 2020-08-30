@@ -6,7 +6,7 @@
       <input
         v-model="newTodoText"
         id="new-todo"
-        placeholder="E.g. Feed the cat"
+        placeholder="sanpo"
       >
     </form>
     <ul>
@@ -15,6 +15,7 @@
         :key="todo.id"
         v-bind:title="todo.title"
         v-bind:id="todo.id"
+        v-bind:onClickRemoveButton="removeTodo(todo.id)"
       />
     </ul>
   </div>
@@ -24,6 +25,8 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Axios, { AxiosResponse } from 'axios';
 import TodoListItem from './components/TodoListItem.vue';
+
+const baseURL = 'http://localhost:8000';
 
 type Todo = {
   id: number;
@@ -46,7 +49,7 @@ export default class App extends Vue {
     }
 
     const postData = { title: this.newTodoText };
-    Axios.post('http://localhost:8000/api/v1/todos', postData)
+    Axios.post(`${baseURL}/api/v1/todos`, postData)
       .then((res: AxiosResponse<Todo>) => {
         const todo = res.data;
         this.todos.unshift({
@@ -57,8 +60,19 @@ export default class App extends Vue {
       });
   }
 
+  removeTodo(todoID: number) {
+    return () => {
+      Axios.delete(`${baseURL}/api/v1/todos/${todoID}`)
+        .then(() => {
+          this.todos = this.todos.filter((todo: Todo) => {
+            return todo.id !== todoID;
+          });
+        });
+    }
+  }
+
   created() {
-    Axios.get('http://localhost:8000/api/v1/todos')
+    Axios.get(`${baseURL}/api/v1/todos`)
       .then((res: AxiosResponse<Array<Todo>>) => {
         this.todos = res.data.sort((a: Todo, b: Todo) => {
           if (a.id < b.id) {
