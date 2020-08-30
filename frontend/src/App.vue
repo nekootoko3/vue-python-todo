@@ -1,29 +1,55 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <h1>Todo App</h1>
+    <form v-on:submit.prevent="addNewTodo">
+      <label for="new-todo">Add a todo</label>
+      <input
+        v-model="newTodoText"
+        id="new-todo"
+        placeholder="E.g. Feed the cat"
+      >
+    </form>
+    <ul>
+      <TodoListItem
+        v-for="todo in todos"
+        :key="todo.id"
+        v-bind:title="todo.title"
+        v-bind:id="todo.id"
+      />
+    </ul>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from './components/HelloWorld.vue';
+import Axios from 'axios';
+import TodoListItem from './components/TodoListItem.vue';
 
 @Component({
   components: {
-    HelloWorld,
+    TodoListItem,
   },
 })
-export default class App extends Vue {}
-</script>
+export default class App extends Vue {
+  todos: Array<{id: number; title: string}> = [];
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  newTodoText = '';
+
+  addNewTodo() {
+    this.todos.push({
+      id: 1,
+      title: this.newTodoText,
+    });
+    this.newTodoText = '';
+  }
+//
+//  created() {
+//    Axios.get('http://localhost:8000/api/v1/todos')
+//      .then((res) => {
+//        console.log(res.data);
+//        const json = JSON.parse(res.data);
+//        this.todos = json;
+//      });
+//  }
 }
-</style>
+</script>
