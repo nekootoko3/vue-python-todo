@@ -31,6 +31,6 @@ def read_todos(db: Session = Depends(get_db)):
     return todos
 
 
-@app.post("/api/v1/todos", response_model=schemas.Todo)
+@app.post("/api/v1/todos", response_model=schemas.Todo,  status_code=201)
 def create_todo(todo: schemas.TodoCreate, db: Session = Depends(get_db)):
     return crud.create_todo(db=db, todo=todo)
