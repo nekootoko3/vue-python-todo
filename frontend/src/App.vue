@@ -22,8 +22,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Axios from 'axios';
+import Axios, { AxiosResponse } from 'axios';
 import TodoListItem from './components/TodoListItem.vue';
+
+type Todo = {
+  id: number;
+  title: string;
+}
 
 @Component({
   components: {
@@ -31,23 +36,37 @@ import TodoListItem from './components/TodoListItem.vue';
   },
 })
 export default class App extends Vue {
-  todos: Array<{id: number; title: string}> = [];
+  todos: Array<Todo> = [];
 
   newTodoText = '';
 
   addNewTodo() {
-    this.todos.push({
-      id: 1,
-      title: this.newTodoText,
-    });
-    this.newTodoText = '';
+    if (this.newTodoText === '') {
+      return;
+    }
+
+    const postData = { title: this.newTodoText };
+    Axios.post('http://localhost:8000/api/v1/todos', postData)
+      .then((res: AxiosResponse<Todo>) => {
+        const todo = res.data;
+        this.todos.unshift({
+          id: todo.id,
+          title: todo.title,
+        });
+        this.newTodoText = '';
+      });
   }
 
   created() {
     Axios.get('http://localhost:8000/api/v1/todos')
-      .then((res) => {
-        console.log(res.data);
-        this.todos = res.data;
+      .then((res: AxiosResponse<Array<Todo>>) => {
+        this.todos = res.data.sort((a: Todo, b: Todo) => {
+          if (a.id < b.id) {
+            return 1;
+          }
+
+          return -1;
+        });
       });
   }
 }
