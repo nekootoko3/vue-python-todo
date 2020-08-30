@@ -1,5 +1,8 @@
 <template>
-  <li>{{ id }}:{{ title }}</li>
+  <li>
+    {{ id }}:{{ title }}
+    <button @click="onClickRemoveButton">Remove</button>
+  </li>
 </template>
 
 <script lang="ts">
@@ -10,5 +13,7 @@ export default class TodoListItem extends Vue {
   @Prop() private id!: number;
 
   @Prop() private title!: string;
+
+  @Prop() private onClickRemoveButton!: Function;
 }
 </script>

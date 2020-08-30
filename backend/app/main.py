@@ -38,12 +38,15 @@ async def root():
     return {"message": "Hello World"}
 
 
-@app.get("/api/v1/todos", response_model=List[schemas.Todo])
+@app.get("/api/v1/todos", response_model=List[schemas.Todo], status_code=200)
 def read_todos(db: Session = Depends(get_db)):
-    todos = crud.get_todos(db)
-    return todos
+    return crud.get_todos(db)
 
 
 @app.post("/api/v1/todos", response_model=schemas.Todo,  status_code=201)
 def create_todo(todo: schemas.TodoCreate, db: Session = Depends(get_db)):
     return crud.create_todo(db=db, todo=todo)
+
+@app.delete("/api/v1/todos/{todo_id}", status_code=200)
+def delete_todo(todo_id: int, db: Session = Depends(get_db)):
+    return crud.delete_todo(db=db, todo_id=todo_id)
