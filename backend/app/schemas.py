@@ -8,6 +8,9 @@ class TodoBase(BaseModel):
 class TodoCreate(TodoBase):
     title: str
 
+class TodoUpdate(TodoBase):
+    title: str
+
 class Todo(TodoBase):
     id: int
     title: str
