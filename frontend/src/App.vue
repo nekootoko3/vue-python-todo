@@ -26,7 +26,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import Axios, { AxiosResponse } from 'axios';
 import TodoListItem from './components/TodoListItem.vue';
 
-const baseURL = 'http://localhost:8000';
+const baseURL = process.env.VUE_APP_BASE_API_URL;
 
 type Todo = {
   id: number;
