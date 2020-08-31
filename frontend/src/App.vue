@@ -6,36 +6,34 @@
       <input
         v-model="newTodoText"
         id="new-todo"
-        placeholder="sanpo"
+        placeholder="e.g. sanpo"
       >
     </form>
-    <ul>
-      <TodoListItem
-        v-for="todo in todos"
-        :key="todo.id"
-        v-bind:title="todo.title"
-        v-bind:id="todo.id"
-        v-bind:onClickRemoveButton="removeTodo(todo.id)"
-      />
-    </ul>
+    <TodoTable
+      v-bind:todos="todos"
+      v-bind:removeTodo="removeTodo"
+      id="todo-table"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Axios, { AxiosResponse } from 'axios';
-import TodoListItem from './components/TodoListItem.vue';
 
-const baseURL = process.env.VUE_APP_BASE_API_URL;
+import TodoTable from './components/TodoTable.vue';
+import Axios from 'axios';
 
-type Todo = {
+const baseURL = process.env.VUE_APP_BASE_API_URL; //eslint-disable-line
+
+export type Todo = {
   id: number;
   title: string;
 }
 
 @Component({
   components: {
-    TodoListItem,
+    TodoTable,
   },
 })
 export default class App extends Vue {
@@ -85,3 +83,15 @@ export default class App extends Vue {
   }
 }
 </script>
+
+<style>
+#app {
+  padding: 20px 30px;
+}
+#new-todo {
+  margin-left: 5px;
+}
+#todo-table {
+  margin-top: 10px;
+}
+</style>
