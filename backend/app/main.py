@@ -1,4 +1,4 @@
-from typing import List
+from typing import Any, List
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -25,7 +25,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def get_db():
+def get_db() -> Session:
     db = SessionLocal()
     try:
         yield db
@@ -33,20 +33,15 @@ def get_db():
         db.close()
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
 @app.get("/api/v1/todos", response_model=List[schemas.Todo], status_code=200)
-def read_todos(db: Session = Depends(get_db)):
+def read_todos(db: Session = Depends(get_db)) -> Any:
     return crud.get_todos(db)
 
 
 @app.post("/api/v1/todos", response_model=schemas.Todo,  status_code=201)
-def create_todo(todo: schemas.TodoCreate, db: Session = Depends(get_db)):
+def create_todo(todo: schemas.TodoCreate, db: Session = Depends(get_db)) -> Any:
     return crud.create_todo(db=db, todo=todo)
 
 @app.delete("/api/v1/todos/{todo_id}", status_code=200)
-def delete_todo(todo_id: int, db: Session = Depends(get_db)):
+def delete_todo(todo_id: int, db: Session = Depends(get_db)) -> Any:
     return crud.delete_todo(db=db, todo_id=todo_id)
