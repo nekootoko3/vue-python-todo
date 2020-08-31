@@ -43,7 +43,7 @@ export default class App extends Vue {
 
   newTodoText = '';
 
-  addNewTodo() {
+  addNewTodo(): () => void {
     if (this.newTodoText === '') {
       return;
     }
@@ -60,7 +60,7 @@ export default class App extends Vue {
       });
   }
 
-  removeTodo(todoID: number) {
+  removeTodo(todoID: number): (toodID: number) => void {
     return () => {
       Axios.delete(`${baseURL}/api/v1/todos/${todoID}`)
         .then(() => {
