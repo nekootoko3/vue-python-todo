@@ -21,6 +21,13 @@ def create_todo(db: Session, todo: schemas.TodoCreate) -> models.Todo:
     db.refresh(db_todo)
     return db_todo
 
+def update_todo(db: Session, todo_id: int, todo: schemas.TodoUpdate) -> models.Todo:
+    model_todo = get_todo(db, todo_id)
+    setattr(model_todo, "title", todo.title)
+    db.add(model_todo)
+    db.commit()
+    return model_todo
+
 def delete_todo(db: Session, todo_id: int) -> None:
     model_todo = get_todo(db, todo_id)
     db.delete(model_todo)

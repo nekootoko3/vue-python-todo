@@ -5,7 +5,8 @@
       :key="todo.id"
       v-bind:title="todo.title"
       v-bind:id="todo.id"
-      v-bind:onClickRemoveButton="removeTodo(todo.id)"
+      v-bind:removeTodo="createRemoveTodo(todo.id)"
+      v-bind:createUpdateTodo="createUpdateTodo"
       class="todo-row"
     />
   </div>
@@ -24,7 +25,9 @@ import TodoTableRow from "./TodoTableRow.vue"
 export default class TodoTable extends Vue {
   @Prop() private todos!: Array<Todo>;
 
-  @Prop() private removeTodo!: Function;
+  @Prop() private createRemoveTodo!: Function;
+
+  @Prop() private createUpdateTodo!: Function;
 }
 </script>
 

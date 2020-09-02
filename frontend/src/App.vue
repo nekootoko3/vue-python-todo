@@ -11,7 +11,8 @@
     </form>
     <TodoTable
       v-bind:todos="todos"
-      v-bind:removeTodo="removeTodo"
+      v-bind:createRemoveTodo="createRemoveTodo"
+      v-bind:createUpdateTodo="createUpdateTodo"
       id="todo-table"
     />
   </div>
@@ -22,9 +23,8 @@ import { Component, Vue } from 'vue-property-decorator';
 import Axios, { AxiosResponse } from 'axios';
 
 import TodoTable from './components/TodoTable.vue';
-import Axios from 'axios';
 
-const baseURL = process.env.VUE_APP_BASE_API_URL; //eslint-disable-line
+const baseURL = process.env.VUE_APP_BASE_API_URL;
 
 export type Todo = {
   id: number;
@@ -58,7 +58,22 @@ export default class App extends Vue {
       });
   }
 
-  removeTodo(todoID: number): (toodID: number) => void {
+  createUpdateTodo(todoID: number, title: string): () => void {
+    return () => {
+      const data = { title: title };
+      Axios.put(`${baseURL}/api/v1/todos/${todoID}`, data)
+        .then(() => {
+          this.todos = this.todos.map((todo: Todo) => {
+            if (todo.id == todoID) {
+              todo.title = title
+            }
+            return todo
+          })
+        })
+    }
+  }
+
+  createRemoveTodo(todoID: number): (toodID: number) => void {
     return () => {
       Axios.delete(`${baseURL}/api/v1/todos/${todoID}`)
         .then(() => {
@@ -86,7 +101,10 @@ export default class App extends Vue {
 
 <style>
 #app {
+  position: relative;
   padding: 20px 30px;
+  width: 100%;
+  height: 100%;
 }
 #new-todo {
   margin-left: 5px;
