@@ -2,4 +2,5 @@
 
 set -eux
 
+cd $(dirname $(dirname $0))
 docker-compose run web pytest
