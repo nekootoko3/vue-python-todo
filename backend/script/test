@@ -3,4 +3,7 @@
 set -eux
 
 cd $(dirname $(dirname $0))
+if [ ! -e .env ]; then
+  cp .env.sample .env
+fi
 docker-compose run web pytest
