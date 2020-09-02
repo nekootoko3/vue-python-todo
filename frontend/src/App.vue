@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Axios, { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 import TodoTable from './components/TodoTable.vue';
 
@@ -47,7 +47,7 @@ export default class App extends Vue {
     }
 
     const postData = { title: this.newTodoText };
-    Axios.post(`${baseURL}/api/v1/todos`, postData)
+    axios.post(`${baseURL}/api/v1/todos`, postData)
       .then((res: AxiosResponse<Todo>) => {
         const todo = res.data;
         this.todos.unshift({
@@ -61,7 +61,7 @@ export default class App extends Vue {
   createUpdateTodo(todoID: number, title: string): () => void {
     return () => {
       const data = { title: title };
-      Axios.put(`${baseURL}/api/v1/todos/${todoID}`, data)
+      axios.put(`${baseURL}/api/v1/todos/${todoID}`, data)
         .then(() => {
           this.todos = this.todos.map((todo: Todo) => {
             if (todo.id == todoID) {
@@ -75,7 +75,7 @@ export default class App extends Vue {
 
   createRemoveTodo(todoID: number): (toodID: number) => void {
     return () => {
-      Axios.delete(`${baseURL}/api/v1/todos/${todoID}`)
+      axios.delete(`${baseURL}/api/v1/todos/${todoID}`)
         .then(() => {
           this.todos = this.todos.filter((todo: Todo) => {
             return todo.id !== todoID;
@@ -85,7 +85,7 @@ export default class App extends Vue {
   }
 
   created() {
-    Axios.get(`${baseURL}/api/v1/todos`)
+    axios.get(`${baseURL}/api/v1/todos`)
       .then((res: AxiosResponse<Array<Todo>>) => {
         this.todos = res.data.sort((a: Todo, b: Todo) => {
           if (a.id < b.id) {
