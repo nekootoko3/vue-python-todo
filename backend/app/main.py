@@ -1,4 +1,5 @@
 from typing import Any, List
+import os
 
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,11 +10,7 @@ from .database import get_db
 
 app = FastAPI()
 
-origins = [
-    "http://localhost",
-    "http://localhost:8080",
-]
-
+origins = os.environ["CORS_URLS"].split(",")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
