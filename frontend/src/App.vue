@@ -38,6 +38,7 @@ export default class App extends Vue {
   newTodoText = "";
 
   addNewTodo(): void {
+    // TODO: add validation
     if (!this.newTodoText) {
       return;
     }
@@ -61,6 +62,7 @@ export default class App extends Vue {
 
   createUpdateTodo(todoID: number, title: string): () => void {
     return () => {
+      // TODO: add validation
       const data = { title: title };
       axios
         .put(`${baseURL}/api/v1/todos/${todoID}`, data)
