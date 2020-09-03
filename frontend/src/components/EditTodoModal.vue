@@ -29,10 +29,9 @@ export default class EditTodoModal extends Vue {
 
   todoTitle = this.currentTitle;
 
-  onSubmit(): () => void {
+  onSubmit(): void {
     this.$emit('close');
     this.createUpdateTodo(this.id, this.todoTitle)();
-    return;
   }
 }
 </script>

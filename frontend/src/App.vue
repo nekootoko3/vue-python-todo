@@ -42,7 +42,7 @@ export default class App extends Vue {
   newTodoText = '';
 
   addNewTodo(): () => void {
-    if (!!this.newTodoText) {
+    if (this.newTodoText) {
       return;
     }
 
@@ -55,7 +55,7 @@ export default class App extends Vue {
           title: todo.title,
         });
         this.newTodoText = '';
-      }).catch((err: AxiosError) => {
+      }).catch(() => {
         alert("Somthing wrong. Please try later");
         // TODO: Notify error
       });
@@ -68,9 +68,9 @@ export default class App extends Vue {
         .then(() => {
           this.todos = this.todos.map((todo: Todo) => {
             if (todo.id === todoID) {
-              todo.title = title
+              todo.title = title;
             }
-            return todo
+            return todo;
           })
         })
         .catch((err: AxiosError) => {
@@ -122,8 +122,7 @@ export default class App extends Vue {
 
           return -1;
         });
-      }).catch((err: AxiosError) => {
-        const res = err.response;
+      }).catch(() => {
         alert("Somthing wrong. Please try later");
         // TODO: Notify somewhere
       });
