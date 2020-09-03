@@ -37,8 +37,8 @@ export default class App extends Vue {
 
   newTodoText = "";
 
-  addNewTodo(): () => void {
-    if (this.newTodoText) {
+  addNewTodo(): void {
+    if (!this.newTodoText) {
       return;
     }
 
