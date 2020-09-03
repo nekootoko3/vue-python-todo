@@ -3,6 +3,7 @@ uvicorn
 requests
 pytest
 sqlalchemy
+sqlalchemy_utils
 psycopg2
 alembic
 python-dotenv

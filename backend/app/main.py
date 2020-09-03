@@ -1,22 +1,16 @@
 from typing import Any, List
+import os
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session
 
 from .crud import *
 from . import crud, models, schemas
-from .database import SessionLocal, engine
-
-models.Base.metadata.create_all(bind=engine)
+from .database import get_db
 
 app = FastAPI()
 
-origins = [
-    "http://localhost",
-    "http://localhost:8080",
-]
-
+origins = os.environ["CORS_URLS"].split(",")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -24,13 +18,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-def get_db() -> Session:
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 @app.get("/api/v1/todos", response_model=List[schemas.Todo], status_code=200)

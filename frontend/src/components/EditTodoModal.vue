@@ -2,14 +2,9 @@
   <transition name="modal" appear>
     <div class="modal-overlay" @click.self="$emit('close')">
       <div class="modal-window">
-        <form
-          v-on:submit.prevent="onSubmit"
-        >
+        <form v-on:submit.prevent="onSubmit">
           <label for="edit-todo">Edit todo</label>
-            <input
-              v-model="todoTitle"
-              id="edit-todo"
-            >
+          <input v-model="todoTitle" id="edit-todo" />
         </form>
       </div>
     </div>
@@ -17,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component({})
 export default class EditTodoModal extends Vue {
@@ -29,10 +24,9 @@ export default class EditTodoModal extends Vue {
 
   todoTitle = this.currentTitle;
 
-  onSubmit(): () => void {
-    this.$emit('close');
+  onSubmit(): void {
+    this.$emit("close");
     this.createUpdateTodo(this.id, this.todoTitle)();
-    return;
   }
 }
 </script>
