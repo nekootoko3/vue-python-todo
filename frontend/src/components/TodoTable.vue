@@ -13,14 +13,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { Todo } from '../App.vue'
-import TodoTableRow from "./TodoTableRow.vue"
+import { Component, Prop, Vue } from "vue-property-decorator";
+import { Todo } from "../App.vue";
+import TodoTableRow from "./TodoTableRow.vue";
 
 @Component({
   components: {
-    TodoTableRow,
-  },
+    TodoTableRow
+  }
 })
 export default class TodoTable extends Vue {
   @Prop() private todos!: Array<Todo>;
@@ -31,5 +31,4 @@ export default class TodoTable extends Vue {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

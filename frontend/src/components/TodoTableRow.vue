@@ -21,13 +21,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from "vue-property-decorator";
 
-import EditTodoModal from './EditTodoModal.vue'
+import EditTodoModal from "./EditTodoModal.vue";
 
 @Component({
   components: {
-    EditTodoModal,
+    EditTodoModal
   }
 })
 export default class TodoTableRow extends Vue {
