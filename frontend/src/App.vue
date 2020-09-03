@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosResponse, AxiosError } from 'axios';
 
 import TodoTable from './components/TodoTable.vue';
 
@@ -42,7 +42,7 @@ export default class App extends Vue {
   newTodoText = '';
 
   addNewTodo(): () => void {
-    if (this.newTodoText === '') {
+    if (!!this.newTodoText) {
       return;
     }
 
@@ -55,6 +55,9 @@ export default class App extends Vue {
           title: todo.title,
         });
         this.newTodoText = '';
+      }).catch((err: AxiosError) => {
+        alert("Somthing wrong. Please try later");
+        // TODO: Notify error
       });
   }
 
@@ -64,12 +67,25 @@ export default class App extends Vue {
       axios.put(`${baseURL}/api/v1/todos/${todoID}`, data)
         .then(() => {
           this.todos = this.todos.map((todo: Todo) => {
-            if (todo.id == todoID) {
+            if (todo.id === todoID) {
               todo.title = title
             }
             return todo
           })
         })
+        .catch((err: AxiosError) => {
+          const res = err.response;
+
+          if (!!res && res.status === 404) {
+            alert("already deleted");
+            this.todos = this.todos.filter((todo: Todo) => {
+              return todo.id !== todoID;
+            });
+          } else {
+            alert("Somthing wrong. Please try later");
+            // TODO: Notify error
+          }
+        });
     }
   }
 
@@ -80,6 +96,18 @@ export default class App extends Vue {
           this.todos = this.todos.filter((todo: Todo) => {
             return todo.id !== todoID;
           });
+        }).catch((err: AxiosError) => {
+          const res = err.response;
+
+          if (!res && res.status === 404) {
+            alert("already deleted");
+            this.todos = this.todos.filter((todo: Todo) => {
+              return todo.id !== todoID;
+            });
+          } else {
+            alert("Somthing wrong. Please try later");
+            // TODO: Notify somewhere
+          }
         });
     }
   }
@@ -94,6 +122,10 @@ export default class App extends Vue {
 
           return -1;
         });
+      }).catch((err: AxiosError) => {
+        const res = err.response;
+        alert("Somthing wrong. Please try later");
+        // TODO: Notify somewhere
       });
   }
 }
